@@ -45,7 +45,7 @@ namespace Khanah.Api
 
             //app.UseAuthorization();
 
-            var created = quotesDBContext.Database.EnsureCreated();
+            quotesDBContext.Database.Migrate();
             
             app.UseEndpoints(endpoints =>
             {
