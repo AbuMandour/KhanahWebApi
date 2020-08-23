@@ -20,11 +20,24 @@ namespace Khanah.Api.Controllers
             _quotesDB = quotesDB;
         }
         [HttpGet]
-        public IActionResult GetQuotes()
+        public IActionResult GetQuotes(string sort)
         {
             try
             {
-                 return Ok(_quotesDB.Quotes.ToList().GetRange(0,500));
+                IQueryable<Quote> quotes;
+                switch (sort)
+                {
+                    case "asc":
+                        quotes = _quotesDB.Quotes.OrderBy(x=>x.Body);
+                        break;
+                    case "desc":
+                        quotes =_quotesDB.Quotes.OrderByDescending(x=>x.Body);
+                        break;
+                    default:
+                        quotes = _quotesDB.Quotes;
+                        break;
+                }                
+                 return Ok(quotes);
             }
             catch(Exception exception)
             {
